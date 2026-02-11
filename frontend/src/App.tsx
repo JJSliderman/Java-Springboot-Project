@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// src/App.tsx
 
-function App() {
+//Connects to backend to display api call results on frontend
+import React, { useState } from "react";
+import axios from "axios";
+
+export const App: React.FC = () => {
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+
+  const fetchGreeting = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/user/greet`,
+        {
+          params: { name },
+        },
+      );
+      setMessage(response.data);
+    } catch (error) {
+      console.error("Error fetching greeting:", error);
+      setMessage("Error connecting to backend");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: "20px" }}>
+      <h1>Java + TypeScript Integration</h1>
+      <input
+        type="text"
+        placeholder="Enter your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <button onClick={fetchGreeting}>Get Greeting</button>
+      <p>{message}</p>
     </div>
   );
-}
-
-export default App;
+};
