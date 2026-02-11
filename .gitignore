@@ -1,17 +1,10 @@
-/target/
-!.mvn/wrapper/maven-wrapper.jar
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 # Credit to https://gist.github.com/fedir/cd58012d42c8c1edbb3fff611de6c2f6
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
 
 # Created by https://www.gitignore.io/api/git,java,maven,eclipse,windows
 
@@ -66,6 +59,15 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
 ### IntelliJ IDEA ###
 .idea
