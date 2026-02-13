@@ -1,12 +1,23 @@
 // src/App.tsx
 
 //Connects to backend to display api call results on frontend
-import React, { useState } from "react";
+import { useState } from "react";
+import { Popover } from "@mui/material";
 import axios from "axios";
+import { UserInfo } from "./UserInfo";
 
-export const App: React.FC = () => {
+export const App = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [anchor, setAnchor] = useState<HTMLElement | undefined>();
+  const [existingUser, setExistingUser] = useState(false);
+  const [user, setUser] = useState<{
+    username: string;
+    name: string;
+    age: string;
+    password: string;
+  }>({ username: "", name: "", age: "", password: "" });
 
   const fetchGreeting = async () => {
     try {
@@ -23,17 +34,84 @@ export const App: React.FC = () => {
     }
   };
 
+  const close = () => {
+    setExistingUser(false);
+    setUser({ username: "", password: "", age: "", name: "" });
+    setAnchor(undefined);
+  };
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/user/retrieve`,
+        {
+          params: { username },
+        },
+      );
+      setUser(response.data);
+      setExistingUser(true);
+      setMessage(`Users with username ${username} retrieved!`);
+    } catch (error) {
+      console.error("Error retrieving user:", error);
+      setMessage("Error connecting to backend");
+    }
+  };
+
   return (
     <div style={{ padding: "20px" }}>
+      <Popover open={!!anchor} anchorEl={anchor}>
+        <UserInfo
+          existingUser={existingUser}
+          user={user}
+          setUser={setUser}
+          setMessage={setMessage}
+          close={close}
+        />
+      </Popover>
       <h1>Java + TypeScript Integration</h1>
-      <input
-        type="text"
-        placeholder="Enter your name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <button onClick={fetchGreeting}>Get Greeting</button>
+      <div style={{ gap: "8px", display: "flex" }}>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          style={{ width: "200px" }}
+        />
+        <button style={{ width: "100px" }} onClick={fetchGreeting}>
+          Get Greeting
+        </button>
+      </div>
       <p>{message}</p>
+      <div style={{ display: "flex", gap: "8px" }}>
+        <input
+          type="text"
+          placeholder="Enter user you want to access"
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
+          style={{ width: "200px" }}
+        />
+        <button
+          onClick={(e) => {
+            getUser();
+            setAnchor(e.currentTarget);
+          }}
+          style={{ width: "100px" }}
+        >
+          Get User
+        </button>
+      </div>
+      <div style={{ paddingTop: "20px" }}>
+        <button
+          onClick={(e) => {
+            setUser({ username: "", password: "", age: "", name: "" });
+            setAnchor(e.currentTarget);
+          }}
+        >
+          Create User
+        </button>
+      </div>
     </div>
   );
 };
