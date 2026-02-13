@@ -30,31 +30,20 @@ public class UserController {
         return "Hello, " + name + "!";
     }
 
-    @GetMapping
-    public List<User> getAllUsers(
-        @RequestParam(required=false) String name,
-        @RequestParam(required=false) String username,
-        @RequestParam(required=false) String password,
-        @RequestParam(required=false) Integer age) {
-            if(name != null){
-                return userService.getUsersFromName(name);
-            } else if(age != null){
-                return userService.getUsersFromAge(age);
-            } else if(username != null){
-                return userService.getUsersFromUsername(username);
-            } else {
-                return userService.getUsers();
-            }
+    @GetMapping("/retrieve")
+    public List<User> getUser(
+       @RequestParam(required=false) String username) {
+            return userService.getUsersFromUsername(username);    
         }
-    @PostMapping
+    @PostMapping("/addUser")
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
         User createdUser = userService.addUser(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<User> updateExistingUser(@RequestBody User user) {
-        User resultUser = userService.updateUser(user);
+    @PutMapping("/editUser")
+    public ResponseEntity<User> updateExistingUser(@RequestParam User user, @RequestParam String oldUsername) {
+        User resultUser = userService.updateUser(user, oldUsername);
         if(resultUser != null) {
             return new ResponseEntity<>(resultUser, HttpStatus.OK);
         } else {
