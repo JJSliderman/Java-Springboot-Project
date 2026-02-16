@@ -3,6 +3,7 @@ import { useState } from "react";
 
 type Props = {
   existingUser: boolean;
+  message: string;
   user: {
     username: string;
     name: string;
@@ -25,19 +26,33 @@ export const UserInfo = ({
   setUser,
   close,
   setMessage,
+  message,
 }: Props) => {
-  const oldUsername = user.username ?? "";
-  const [helperText, setHelperText] = useState<{
-    age: string;
-    username: string;
-    password: string;
-  }>({ age: "", username: "", password: "" });
+  const [ageHelp, setAgeHelp] = useState<{
+    helperText: string;
+    error: boolean;
+  }>({ helperText: "", error: false });
+  const [usernameHelp, setUsernameHelp] = useState<{
+    helperText: string;
+    error: boolean;
+  }>({ helperText: "", error: false });
+  const [passwordHelp, setPasswordHelp] = useState<{
+    helperText: string;
+    error: boolean;
+  }>({ helperText: "", error: false });
   const editUser = async () => {
     try {
-      await axios.put(`http://localhost:8080/api/v1/user/editUser`, {
-        params: { user: { ...user, age: Number(user.age) }, oldUsername },
-      });
-      setMessage(`User ${oldUsername} edited!`);
+      await axios.put(
+        `http://localhost:8080/api/v1/user/editUser`,
+        { ...user, age: Number(user.age) },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // "Authorization": "Bearer your_token_here"
+          },
+        },
+      );
+      setMessage(`User ${user.username} edited!`);
       close();
     } catch (error) {
       console.error("Error editing user:", error);
@@ -47,9 +62,16 @@ export const UserInfo = ({
 
   const addUser = async () => {
     try {
-      await axios.post(`http://localhost:8080/api/v1/user/addUser`, {
-        params: { user: { ...user, age: Number(user.age) } },
-      });
+      await axios.post(
+        `http://localhost:8080/api/v1/user/addUser`,
+        { ...user, age: Number(user.age) },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // "Authorization": "Bearer your_token_here"
+          },
+        },
+      );
       setMessage(`User ${user.username} created!`);
       close();
     } catch (error) {
@@ -60,8 +82,8 @@ export const UserInfo = ({
 
   const deleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/user/${oldUsername}`);
-      setMessage(`User ${oldUsername} deleted!`);
+      await axios.delete(`http://localhost:8080/api/v1/user/${user.username}`);
+      setMessage(`User ${user.username} deleted!`);
       close();
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -70,18 +92,28 @@ export const UserInfo = ({
   };
 
   return (
-    <div style={{ width: "360px", padding: "8px" }}>
+    <div
+      style={{
+        width: "360px",
+        padding: "20px",
+        gap: "20px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <div
         style={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: "start",
+          textAlign: "start",
         }}
       >
-        <p style={{ fontSize: "24px" }}>
+        <text style={{ fontSize: "24px" }}>
           {existingUser ? "Edit User" : "Create User"}
-        </p>
+        </text>
         <button
+          style={{ marginTop: "6px" }}
           type="button"
           onClick={() => {
             close();
@@ -90,30 +122,47 @@ export const UserInfo = ({
           Close
         </button>
       </div>
+      <text>{message}</text>
       <div
         style={{
           gap: "4px",
           display: "flex",
-          alignItems: "center",
+          alignItems: "start",
+          textAlign: "start",
         }}
       >
-        <p style={{ width: "100px" }}>Username</p>
+        <text style={{ width: "100px" }}>Username</text>
         <input
           type="text"
+          style={{
+            cursor: "not-allowed",
+            backgroundColor: existingUser ? "#888" : "white",
+          }}
+          disabled={existingUser}
           placeholder="Enter username"
           value={user.username}
           onChange={(e) => setUser({ ...user, username: e.target.value })}
           onBlur={() => {
             if (user.username === "") {
-              setHelperText({ ...helperText, username: "Must be non-null" });
+              setUsernameHelp({ error: true, helperText: "Must be non-null" });
             } else {
-              setHelperText({ ...helperText, username: "" });
+              setUsernameHelp({ error: false, helperText: "" });
             }
           }}
         />
       </div>
-      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-        <p style={{ width: "100px" }}>Password</p>
+      {usernameHelp.error ? (
+        <text style={{ color: "red" }}>{usernameHelp.helperText}</text>
+      ) : null}
+      <div
+        style={{
+          display: "flex",
+          gap: "4px",
+          alignItems: "start",
+          textAlign: "start",
+        }}
+      >
+        <text style={{ width: "100px" }}>Password</text>
         <input
           type="text"
           placeholder="Enter password"
@@ -121,15 +170,25 @@ export const UserInfo = ({
           onChange={(e) => setUser({ ...user, password: e.target.value })}
           onBlur={() => {
             if (user.password === "") {
-              setHelperText({ ...helperText, password: "Must be non-null" });
+              setPasswordHelp({ error: true, helperText: "Must be non-null" });
             } else {
-              setHelperText({ ...helperText, password: "" });
+              setPasswordHelp({ error: false, helperText: "" });
             }
           }}
         />
       </div>
-      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-        <p style={{ width: "100px" }}>Age</p>
+      {passwordHelp.error ? (
+        <text style={{ color: "red" }}>{passwordHelp.helperText}</text>
+      ) : null}
+      <div
+        style={{
+          display: "flex",
+          gap: "4px",
+          alignItems: "start",
+          textAlign: "start",
+        }}
+      >
+        <text style={{ width: "100px" }}>Age</text>
         <input
           type="text"
           placeholder="Enter age"
@@ -137,15 +196,25 @@ export const UserInfo = ({
           onChange={(e) => setUser({ ...user, age: e.target.value })}
           onBlur={() => {
             if (Number.isNaN(Number(user.age)) && user.age !== "") {
-              setHelperText({ ...helperText, age: "Must be a number" });
+              setAgeHelp({ error: true, helperText: "Must be a number" });
             } else {
-              setHelperText({ ...helperText, age: "" });
+              setAgeHelp({ helperText: "", error: false });
             }
           }}
         />
       </div>
-      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
-        <p style={{ width: "100px" }}>Name</p>
+      {ageHelp.error ? (
+        <text style={{ color: "red" }}>{ageHelp.helperText}</text>
+      ) : null}
+      <div
+        style={{
+          display: "flex",
+          gap: "4px",
+          alignItems: "start",
+          textAlign: "start",
+        }}
+      >
+        <text style={{ width: "100px" }}>Name</text>
         <input
           type="text"
           placeholder="Enter name"
@@ -153,13 +222,33 @@ export const UserInfo = ({
           onChange={(e) => setUser({ ...user, name: e.target.value })}
         />
       </div>
-      <div style={{ display: "flex", justifyContent: "end", gap: "8px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "end",
+          gap: "8px",
+          paddingTop: "20px",
+        }}
+      >
         <button
           onClick={() => {
-            if (existingUser) {
+            if (
+              !ageHelp.error &&
+              !passwordHelp.error &&
+              !usernameHelp.error &&
+              existingUser
+            ) {
               editUser();
-            } else {
+            } else if (
+              !ageHelp.error &&
+              !passwordHelp.error &&
+              !usernameHelp.error
+            ) {
               addUser();
+            } else {
+              setMessage(
+                "Correct any errors in text fields before submitting!",
+              );
             }
           }}
         >

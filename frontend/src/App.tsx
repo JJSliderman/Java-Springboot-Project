@@ -36,11 +36,12 @@ export const App = () => {
 
   const close = () => {
     setExistingUser(false);
+    setMessage("");
     setUser({ username: "", password: "", age: "", name: "" });
     setAnchor(undefined);
   };
 
-  const getUser = async () => {
+  const getUser = async (target: HTMLElement) => {
     try {
       const response = await axios.get(
         `http://localhost:8080/api/v1/user/retrieve`,
@@ -48,9 +49,14 @@ export const App = () => {
           params: { username },
         },
       );
-      setUser(response.data);
-      setExistingUser(true);
-      setMessage(`Users with username ${username} retrieved!`);
+      if (response.data.length > 0) {
+        setUser(response.data[0]);
+        setExistingUser(true);
+        setAnchor(target);
+        setMessage(`Users with username ${username} retrieved!`);
+      } else {
+        setMessage(`No one with username ${username} exists!`);
+      }
     } catch (error) {
       console.error("Error retrieving user:", error);
       setMessage("Error connecting to backend");
@@ -64,6 +70,7 @@ export const App = () => {
           existingUser={existingUser}
           user={user}
           setUser={setUser}
+          message={message}
           setMessage={setMessage}
           close={close}
         />
@@ -85,7 +92,7 @@ export const App = () => {
       <div style={{ display: "flex", gap: "8px" }}>
         <input
           type="text"
-          placeholder="Enter user you want to access"
+          placeholder="Enter username you want to access"
           value={username}
           onChange={(e) => {
             setUsername(e.target.value);
@@ -94,8 +101,7 @@ export const App = () => {
         />
         <button
           onClick={(e) => {
-            getUser();
-            setAnchor(e.currentTarget);
+            getUser(e.currentTarget);
           }}
           style={{ width: "100px" }}
         >
@@ -106,6 +112,7 @@ export const App = () => {
         <button
           onClick={(e) => {
             setUser({ username: "", password: "", age: "", name: "" });
+            setMessage("");
             setAnchor(e.currentTarget);
           }}
         >
