@@ -38,8 +38,8 @@ public class UserService {
         return user;
     }
 
-    public User updateUser(User updatedUser, String oldUsername) {
-        Optional<User> existingUser = userRepository.findByUsername(oldUsername);
+    public User updateUser(User updatedUser) {
+        Optional<User> existingUser = userRepository.findByUsername(updatedUser.getUsername());
         if(existingUser.isPresent()){
             User userToUpdate = existingUser.get();
             userToUpdate.setAge(updatedUser.getAge());

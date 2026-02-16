@@ -6,14 +6,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name="user")
+@Table(name="user", schema="public")
 public class User {
     @Id
-    @Column(name="username", unique=true)
+    @Column(name="username", unique=true, nullable=false)
     private String username;
+    @Column(name="name")
     private String name;
+    @Column(name="password", nullable=false)
     private String password;
+    @Column(name="age")
     private Integer age;
+
+    public User() {
+    }
 
     public User(String username, String name, String password, Integer age) {
         this.username = username;

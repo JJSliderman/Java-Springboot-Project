@@ -42,8 +42,8 @@ public class UserController {
     }
 
     @PutMapping("/editUser")
-    public ResponseEntity<User> updateExistingUser(@RequestParam User user, @RequestParam String oldUsername) {
-        User resultUser = userService.updateUser(user, oldUsername);
+    public ResponseEntity<User> updateExistingUser(@RequestBody User user) {
+        User resultUser = userService.updateUser(user);
         if(resultUser != null) {
             return new ResponseEntity<>(resultUser, HttpStatus.OK);
         } else {
