@@ -10,6 +10,7 @@ export const App = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [anchor, setAnchor] = useState<HTMLElement | undefined>();
   const [existingUser, setExistingUser] = useState(false);
   const [user, setUser] = useState<{
@@ -36,7 +37,6 @@ export const App = () => {
 
   const close = () => {
     setExistingUser(false);
-    setMessage("");
     setUser({ username: "", password: "", age: "", name: "" });
     setAnchor(undefined);
   };
@@ -46,16 +46,16 @@ export const App = () => {
       const response = await axios.get(
         `http://localhost:8080/api/v1/user/retrieve`,
         {
-          params: { username },
+          params: { username, password },
         },
       );
       if (response.data.length > 0) {
         setUser(response.data[0]);
         setExistingUser(true);
         setAnchor(target);
-        setMessage(`Users with username ${username} retrieved!`);
+        setMessage(`User with username ${username} retrieved!`);
       } else {
-        setMessage(`No one with username ${username} exists!`);
+        setMessage(`No one with information provided exists!`);
       }
     } catch (error) {
       console.error("Error retrieving user:", error);
@@ -90,20 +90,31 @@ export const App = () => {
       </div>
       <p>{message}</p>
       <div style={{ display: "flex", gap: "8px" }}>
-        <input
-          type="text"
-          placeholder="Enter username you want to access"
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-          }}
-          style={{ width: "200px" }}
-        />
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <input
+            type="text"
+            placeholder="Enter username for user you want"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            style={{ width: "200px" }}
+          />
+          <input
+            type="text"
+            placeholder="Enter password for user you want"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            style={{ width: "200px" }}
+          />
+        </div>
         <button
           onClick={(e) => {
             getUser(e.currentTarget);
           }}
-          style={{ width: "100px" }}
+          style={{ width: "100px", alignSelf: "center" }}
         >
           Get User
         </button>

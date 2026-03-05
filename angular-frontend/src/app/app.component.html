@@ -1,0 +1,153 @@
+<style>
+  .button-input {
+    display: flex;
+    gap: 8px;
+  }
+
+  .popup {
+    width: 350px;
+    height: 350px;
+    border: 2px solid black;
+  }
+
+  .dual-input {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 250px;
+  }
+  .end-buttons {
+    display: flex;
+    justify-content: end;
+    gap: 8px;
+  }
+  .single-input {
+    display: flex;
+    width: 244px;
+  }
+
+  .error-input {
+    display: flex;
+    width: 244px;
+    color: red;
+    border-color: red;
+  }
+
+  .error-text {
+    font-size: 12px;
+    color: red;
+    text-decoration-color: red;
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .padover {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .get-button {
+    width: 100px;
+    align-self: center;
+  }
+  .message {
+    font-size: 20px;
+  }
+  .pill-group {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+</style>
+<div *ngIf="anchor != null">
+  <div class="popup">
+    <div class="padover">
+      <div class="top-row">
+        <p class="message">{{ existingUser ? 'Edit User' : 'Create User' }}</p>
+        <button class="get-button" (click)="close()">Close</button>
+      </div>
+      <input
+        type="text"
+        [ngClass]="usernameError.error == false || existingUser ? 'single-input' : 'error-input'"
+        [disabled]="existingUser"
+        placeholder="Enter username"
+        [(ngModel)]="data.username"
+        (ngModelChange)="changeDataUsername($event)"
+        (blur)="blurDataUsername()"
+      />
+      <p class="error-text" *ngIf="usernameError.error">
+        {{ usernameError.helperText }}
+      </p>
+      <input
+        type="text"
+        [ngClass]="passwordError.error ? 'error-input' : 'single-input'"
+        placeholder="Enter password"
+        [(ngModel)]="data.password"
+        (ngModelChange)="changeDataPassword($event)"
+        (blur)="blurDataPassword()"
+      />
+      <p class="error-text" *ngIf="passwordError.error">{{ passwordError.helperText }}</p>
+      <input
+        type="text"
+        [ngClass]="ageError.error ? 'error-input' : 'single-input'"
+        placeholder="Enter age"
+        [(ngModel)]="data.age"
+        (blur)="blurDataAge()"
+        (ngModelChange)="changeDataAge($event)"
+      />
+      <p class="error-text" *ngIf="ageError.error">{{ ageError.helperText }}</p>
+      <input
+        type="text"
+        class="single-input"
+        placeholder="Enter name"
+        [(ngModel)]="data.name"
+        (ngModelChange)="changeDataName($event)"
+      />
+      <div class="end-buttons">
+        <button class="get-button" *ngIf="existingUser" (click)="deleteUser()">Delete User</button>
+        <button class="get-button" *ngIf="existingUser" (click)="editUser()">Edit User</button>
+        <button class="get-button" *ngIf="existingUser == false" (click)="createUser()">
+          Create User
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pill-group">
+  <p class="message">{{ message }}</p>
+  <div class="button-input">
+    <input
+      type="text"
+      class="single-input"
+      placeholder="Enter your name"
+      [(ngModel)]="name"
+      (ngModelChange)="changeValue($event)"
+    />
+    <button (click)="fetchGreeting()" class="get-button">Get Greeting</button>
+  </div>
+  <div class="button-input">
+    <div class="dual-input">
+      <input
+        [(ngModel)]="user"
+        (ngModelChange)="changeUserValue($event)"
+        type="text"
+        placeholder="Enter username for requested user"
+      />
+      <input
+        [(ngModel)]="password"
+        (ngModelChange)="changePasswordValue($event)"
+        type="text"
+        placeholder="Enter password for requested user"
+      />
+    </div>
+    <button (click)="fetchData($event.currentTarget)" class="get-button">Get User</button>
+  </div>
+  <button (click)="setAnchor($event.currentTarget)" class="get-button">Create User</button>
+</div>

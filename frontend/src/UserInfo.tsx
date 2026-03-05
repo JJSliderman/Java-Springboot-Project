@@ -42,7 +42,7 @@ export const UserInfo = ({
   }>({ helperText: "", error: false });
   const editUser = async () => {
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8080/api/v1/user/editUser`,
         { ...user, age: Number(user.age) },
         {
@@ -52,7 +52,7 @@ export const UserInfo = ({
           },
         },
       );
-      setMessage(`User ${user.username} edited!`);
+      setMessage(response.data);
       close();
     } catch (error) {
       console.error("Error editing user:", error);
@@ -62,7 +62,7 @@ export const UserInfo = ({
 
   const addUser = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `http://localhost:8080/api/v1/user/addUser`,
         { ...user, age: Number(user.age) },
         {
@@ -72,7 +72,7 @@ export const UserInfo = ({
           },
         },
       );
-      setMessage(`User ${user.username} created!`);
+      console.log(response.data);
       close();
     } catch (error) {
       console.error("Error creating user:", error);
@@ -82,8 +82,10 @@ export const UserInfo = ({
 
   const deleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/user/${user.username}`);
-      setMessage(`User ${user.username} deleted!`);
+      const response = await axios.delete(
+        `http://localhost:8080/api/v1/user/${user.username}`,
+      );
+      setMessage(response.data);
       close();
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -135,7 +137,7 @@ export const UserInfo = ({
         <input
           type="text"
           style={{
-            cursor: "not-allowed",
+            cursor: existingUser ? "not-allowed" : "auto",
             backgroundColor: existingUser ? "#888" : "white",
           }}
           disabled={existingUser}
@@ -246,6 +248,21 @@ export const UserInfo = ({
             ) {
               addUser();
             } else {
+              if (Number.isNaN(Number(user.age)) && user.age !== "") {
+                setAgeHelp({ error: true, helperText: "Must be a number" });
+              }
+              if (user.username === "") {
+                setUsernameHelp({
+                  error: true,
+                  helperText: "Must be non-null",
+                });
+              }
+              if (user.password === "") {
+                setPasswordHelp({
+                  error: true,
+                  helperText: "Must be non-null",
+                });
+              }
               setMessage(
                 "Correct any errors in text fields before submitting!",
               );

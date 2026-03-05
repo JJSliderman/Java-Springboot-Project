@@ -33,9 +33,30 @@ public class UserService {
         return userRepository.findAll().stream().filter(user -> user.getUsername().toLowerCase().contains(searchText.toLowerCase())).collect(Collectors.toList());
     }
 
-    public User addUser(User user) {
-        userRepository.save(user);
-        return user;
+    public List<User> getUsersFromPassword(String searchText) {
+        return userRepository.findAll().stream().filter(user -> user.getPassword().equals(searchText)).collect(Collectors.toList());
+    }
+
+    public List<User> getUsersFromUsernameAndPassword(String searchText, String passwordText) {
+        return userRepository.findAll().stream().filter(user -> user.getPassword().equals(passwordText) & user.getUsername().equals(searchText)).collect(Collectors.toList());
+    }
+
+    public String addUser(User user) {
+        if(getUsersFromUsername(user.getUsername()).size() == 0){
+            try {
+                userRepository.save(user);
+                return "User created!";
+            } catch (Exception e) {
+                return "Could not create user!";
+            }
+        } else {
+            try {
+                userRepository.save(user);
+                return "User edited!";
+            } catch (Exception e) {
+                return "Could not edit user!";
+            }
+        }
     }
 
     public User updateUser(User updatedUser) {
@@ -54,7 +75,12 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(String usernameToDelete) {
-        userRepository.deleteByUsername(usernameToDelete);
+    public String deleteUser(String usernameToDelete) {
+        try {
+            userRepository.deleteByUsername(usernameToDelete);
+            return "User deleted!";
+        } catch (Exception e) {
+            return "Could not delete user!";
+        }
     }
 }
