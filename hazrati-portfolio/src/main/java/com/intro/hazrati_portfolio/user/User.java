@@ -1,13 +1,16 @@
 package com.intro.hazrati_portfolio.user;
 
 import jakarta.persistence.Entity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.Column;
+import java.util.Collection;
 
 @Entity
 @Table(name="user", schema="public")
-public class User {
+public class User implements UserDetails {
     @Id
     @Column(name="username", unique=true, nullable=false)
     private String username;
@@ -17,6 +20,16 @@ public class User {
     private String password;
     @Column(name="age")
     private Integer age;
+    @Column(name="authorities")
+    private Collection<? extends GrantedAuthority> authorities;
+    @Column(name="enabled")
+    private boolean enabled;
+    @Column(name="accountNonExpired")
+    private boolean accountNonExpired;
+    @Column(name="accountNonLocked")
+    private boolean accountNonLocked;
+    @Column(name="credentialsNonExpired")
+    private boolean credentialsNonExpired;
 
     public User() {
     }
@@ -28,10 +41,31 @@ public class User {
         this.age = age;
     }
 
+    public User(String username, String name, String password, Integer age, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.age = age;
+        this.authorities = authorities;
+    }
+
+    public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     public User(String username, String name, String password) {
         this.username = username;
         this.name = name;
         this.password = password;
+    }
+
+    public User(String username, String name, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.authorities = authorities;
     }
 
     public User(String username, String password) {
@@ -45,6 +79,13 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, Integer age, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.username = username;
+        this.age = age;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     public String getName() {
         return name;
     }
@@ -53,16 +94,43 @@ public class User {
         this.name = name;
     }
 
+    @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    @Override
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void setUsername(String username) {
