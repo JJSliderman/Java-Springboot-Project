@@ -16,6 +16,8 @@ public class WebConfig {
                         .allowedOrigins("http://localhost:3000", "http://localhost:4200") // Frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
+                        .exposedHeaders("Authorization")
+                        .maxAge(3600)
                         .allowCredentials(true);
             }
         };
