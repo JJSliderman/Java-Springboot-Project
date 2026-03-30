@@ -99,7 +99,7 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
+    //Test
     //@Override
     public String getPassword() {
         return password;
