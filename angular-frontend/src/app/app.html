@@ -82,6 +82,7 @@
     min-height: 100%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     padding: 1rem;
     box-sizing: inherit;
@@ -100,6 +101,53 @@
     margin-bottom: 3rem;
   }
 
+  .table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  .tableheader {
+    display: flex;
+    justify-content: center;
+  }
+
+  .tableborder {
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;
+  }
+
+  .tablecell {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .headercell {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .tablerow {
+    display: flex;
+    border-bottom: 1px solid gray;
+  }
+
+  .bottomrow {
+    display: flex;
+    height: 40px;
+  }
+
   .content h1 {
     margin-top: 1.75rem;
   }
@@ -112,6 +160,11 @@
     width: 1px;
     background: var(--red-to-pink-to-purple-vertical-gradient);
     margin-inline: 0.5rem;
+  }
+
+  .tabledivider {
+    width: 1px;
+    background: gray;
   }
 
   .social-links {
@@ -248,6 +301,27 @@
           </svg>
         </a>
       </div>
+    </div>
+  </div>
+  <div class="table">
+    <div class="tableheader">Info Table</div>
+    <div class="tableborder">
+      <div class="tablerow">
+        <div class="headercell">Partner 1</div>
+        <div class="tabledivider"></div>
+        <div class="headercell">Partner 2</div>
+      </div>
+      <div class="tablerow">
+        <div class="tablecell">Mario</div>
+        <div class="tabledivider"></div>
+        <div class="tablecell">Luigi</div>
+      </div>
+      <div class="tablerow">
+        <div class="tablecell">Peach</div>
+        <div class="tabledivider"></div>
+        <div class="tablecell">Zelda</div>
+      </div>
+      <div class="bottomrow"></div>
     </div>
   </div>
 </main>
