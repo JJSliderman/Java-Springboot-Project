@@ -109,9 +109,64 @@
     margin-bottom: 3rem;
   }
 
+  .colors {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  .pinkbutton {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: #fabfb4;
+    cursor: pointer;
+  }
+
+  .yellowbutton {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: #faf2b4;
+    cursor: pointer;
+  }
+
+  .bluebutton {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: #b4dcfa;
+    cursor: pointer;
+  }
+
+  .greenbutton {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: #d1fab4;
+    cursor: pointer;
+  }
+
+  .rosebutton {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: #e2b4fa;
+    cursor: pointer;
+  }
+
   .tableheader {
     display: flex;
     justify-content: center;
+  }
+
+  .colorheader {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
   }
 
   .tableborder {
@@ -198,7 +253,7 @@
   }
 </style>
 
-<main class="main">
+<main [style.background-color]="textColor" class="main">
   <div class="content">
     <div class="left-side">
       <svg
@@ -302,6 +357,14 @@
         </a>
       </div>
     </div>
+  </div>
+  <div class="colorheader">Background Color Options</div>
+  <div class="colors">
+    <button class="pinkbutton" (click)="changeColor('#fabfb4')"></button>
+    <button class="bluebutton" (click)="changeColor('#b4dcfa')"></button>
+    <button class="yellowbutton" (click)="changeColor('#faf2b4')"></button>
+    <button class="greenbutton" (click)="changeColor('#d1fab4')"></button>
+    <button class="rosebutton" (click)="changeColor('#e2b4fa')"></button>
   </div>
   <div class="table">
     <div class="tableheader">Info Table</div>

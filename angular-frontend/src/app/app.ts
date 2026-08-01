@@ -10,4 +10,9 @@ import { AppComponent } from './app.component';
 })
 export class App {
   protected readonly title = signal('angular-frontend');
+  textColor: string = 'white';
+  // Change color dynamically
+  changeColor(newColor: string) {
+    this.textColor = newColor;
+  }
 }
