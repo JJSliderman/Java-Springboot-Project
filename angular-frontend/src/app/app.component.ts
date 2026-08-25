@@ -93,6 +93,23 @@ export class AppComponent {
     });
   }
 
+  fetchAllData() {
+    // Example GET with parameters
+    this.api.getAllUsers().subscribe({
+      next: (res) => {
+        if (res.length == 0) {
+          this.message = 'No users exist!';
+        } else {
+          this.message = `These users have been retrieved:\n${res.join('\n')}`;
+        }
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        this.message = `No users exist!`;
+      },
+    });
+  }
+
   fetchGreeting() {
     // Example GET with parameters
     this.api.getGreeting(this.name).subscribe({

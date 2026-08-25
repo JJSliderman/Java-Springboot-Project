@@ -57,6 +57,7 @@
   }
   .message {
     font-size: 20px;
+    white-space: pre;
   }
   .pill-group {
     display: flex;
@@ -150,4 +151,5 @@
     <button (click)="fetchData($event.currentTarget)" class="get-button">Get User</button>
   </div>
   <button (click)="setAnchor($event.currentTarget)" class="get-button">Create User</button>
+  <button (click)="fetchAllData()" class="get-button">Get All Users</button>
 </div>

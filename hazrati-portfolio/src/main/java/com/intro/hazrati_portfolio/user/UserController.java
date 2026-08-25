@@ -36,7 +36,20 @@ public class UserController {
             return new ResponseEntity<>("Cannot return greeting!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/all")
+    public ResponseEntity<List<String>> getAllUsers() {
+        try {
+            List<User> listy = userService.getUsers();
+            List<String> listerine = new ArrayList<String>();
+            for (int i = 0; i < listy.size(); i++) {
+                listerine.add(listy.get(i).getName());
+            }
+            return new ResponseEntity<>(listerine, HttpStatus.OK);    
+        } catch (Exception e) {
+            List<String> lister = new ArrayList<String>();
+            return new ResponseEntity<>(lister, HttpStatus.OK);
+        }
+    }
     @GetMapping("/retrieve")
     public ResponseEntity<List<User>> getUser(
        @RequestParam(required=true) String username, @RequestParam(required=true) String password) {

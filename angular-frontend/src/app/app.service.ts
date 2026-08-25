@@ -32,6 +32,10 @@ export class UserService {
       .pipe(catchError(this.handleError));
   }
 
+  getAllUsers(): Observable<string[]> {
+    return this.http.get<string[]>(this.apiUrl.concat('all')).pipe(catchError(this.handleError));
+  }
+
   getGreeting(name: string): Observable<string> {
     let params = new HttpParams().set('name', name);
     return this.http
