@@ -89,6 +89,24 @@
     position: relative;
   }
 
+  .single-input {
+    display: flex;
+    width: 244px;
+  }
+
+  .error-input {
+    display: flex;
+    width: 244px;
+    color: red;
+    border-color: red;
+  }
+
+  .error-text {
+    font-size: 12px;
+    color: red;
+    text-decoration-color: red;
+  }
+
   .angular-logo {
     max-width: 9.2rem;
   }
@@ -109,13 +127,22 @@
     margin-bottom: 3rem;
   }
 
+  .text-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 1rem;
+  }
+
   .colors {
     display: flex;
     justify-content: center;
     gap: 8px;
     width: 100%;
     max-width: 700px;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
   }
 
   .pinkbutton {
@@ -158,9 +185,15 @@
     cursor: pointer;
   }
 
+  .get-button {
+    width: 100px;
+    align-self: center;
+  }
+
   .tableheader {
     display: flex;
     justify-content: center;
+    margin-bottom: 1rem;
   }
 
   .colorheader {
@@ -368,6 +401,71 @@
   </div>
   <div class="table">
     <div class="tableheader">Info Table</div>
+    <div class="text-fields">
+      <input
+        type="text"
+        [ngClass]="nameError.error == false ? 'single-input' : 'error-input'"
+        placeholder="Enter name"
+        [(ngModel)]="newFranchise.name"
+        (ngModelChange)="setFranchiseName($event)"
+        (blur)="blurName()"
+      />
+      <p class="error-text" *ngIf="nameError.error">
+        {{ nameError.helperText }}
+      </p>
+      <input
+        type="text"
+        [ngClass]="characterError[0].error == false ? 'single-input' : 'error-input'"
+        placeholder="Enter character name"
+        [(ngModel)]="newFranchise.characters[0]"
+        (ngModelChange)="setFranchiseCharacter($event, 0)"
+        (blur)="blurCharacters(0)"
+      />
+      <p class="error-text" *ngIf="characterError[0].error">
+        {{ characterError[0].helperText }}
+      </p>
+      <input
+        type="text"
+        [ngClass]="characterError[1].error == false ? 'single-input' : 'error-input'"
+        placeholder="Enter character name"
+        [(ngModel)]="newFranchise.characters[1]"
+        (ngModelChange)="setFranchiseCharacter($event, 1)"
+        (blur)="blurCharacters(1)"
+      />
+      <p class="error-text" *ngIf="characterError[1].error">
+        {{ characterError[1].helperText }}
+      </p>
+      <input
+        type="text"
+        [ngClass]="characterError[2].error == false ? 'single-input' : 'error-input'"
+        placeholder="Enter character name"
+        [(ngModel)]="newFranchise.characters[2]"
+        (ngModelChange)="setFranchiseCharacter($event, 2)"
+        (blur)="blurCharacters(2)"
+      />
+      <p class="error-text" *ngIf="characterError[2].error">
+        {{ characterError[2].helperText }}
+      </p>
+      <input
+        type="text"
+        [ngClass]="characterError[3].error == false ? 'single-input' : 'error-input'"
+        placeholder="Enter character name"
+        [(ngModel)]="newFranchise.characters[3]"
+        (ngModelChange)="setFranchiseCharacter($event, 3)"
+        (blur)="blurCharacters(3)"
+      />
+      <p class="error-text" *ngIf="characterError[3].error">
+        {{ characterError[3].helperText }}
+      </p>
+      <button (click)="createFranchise(newFranchise)" class="getbutton">
+        Create New Franchise
+      </button>
+    </div>
+    <div class="colors">
+      @for (field of franchisesList; track field.name) {
+        <button (click)="changeFranchise(field)" class="getbutton">{{ field.name }}</button>
+      }
+    </div>
     <div class="tableborder">
       <div class="tablerow">
         <div class="headercell">Partner 1</div>
@@ -375,14 +473,14 @@
         <div class="headercell">Partner 2</div>
       </div>
       <div class="tablerow">
-        <div class="tablecell">Mario</div>
+        <div class="tablecell">{{ franchise.characters[0] }}</div>
         <div class="tabledivider"></div>
-        <div class="tablecell">Luigi</div>
+        <div class="tablecell">{{ franchise.characters[1] }}</div>
       </div>
       <div class="tablerow">
-        <div class="tablecell">Peach</div>
+        <div class="tablecell">{{ franchise.characters[2] }}</div>
         <div class="tabledivider"></div>
-        <div class="tablecell">Zelda</div>
+        <div class="tablecell">{{ franchise.characters[3] }}</div>
       </div>
       <div class="bottomrow"></div>
     </div>
