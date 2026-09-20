@@ -26,6 +26,11 @@
     width: 244px;
   }
 
+  .page {
+    display: flex;
+    gap: 8px;
+  }
+
   .error-input {
     display: flex;
     width: 244px;
@@ -54,6 +59,11 @@
   .get-button {
     width: 100px;
     align-self: center;
+  }
+  .disabled-button {
+    width: 100px;
+    align-self: center;
+    color: #e0e0e0;
   }
   .message {
     font-size: 20px;
@@ -123,6 +133,23 @@
 </div>
 <div class="pill-group">
   <p class="message">{{ message }}</p>
+  <div class="page">
+    <button
+      (click)="backPage()"
+      [ngClass]="page == 0 ? 'disabled-button' : 'get-button'"
+      [disabled]="page == 0"
+    >
+      Previous Page
+    </button>
+    <button
+      (click)="forwardPage()"
+      [ngClass]="(page + 1) * 5 >= totalUsers ? 'disabled-button' : 'get-button'"
+      [disabled]="(page + 1) * 5 >= totalUsers"
+    >
+      Next Page
+    </button>
+  </div>
+  <button (click)="fetchGreeting()" class="get-button">Get Greeting</button>
   <div class="button-input">
     <input
       type="text"

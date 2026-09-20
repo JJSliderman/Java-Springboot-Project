@@ -1,6 +1,6 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AlteredUser, User, UserService } from './app.service';
+import { AlteredUser, UserService } from './app.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -21,6 +21,10 @@ export class AppComponent {
   passwordError: { error: boolean; helperText: string } = { error: false, helperText: '' };
   ageError: { error: boolean; helperText: string } = { error: false, helperText: '' };
   existingUser: boolean = false;
+  page: number = 0;
+  totalUsers: number = 0;
+  totalUserList: string[] = [];
+  displayedUserList: string[] = [];
   anchor: EventTarget | null = null;
   message = '';
 
@@ -28,6 +32,22 @@ export class AppComponent {
 
   setAnchor(element: EventTarget | null) {
     this.anchor = element;
+  }
+
+  forwardPage() {
+    if ((this.page + 2) * 5 == this.totalUsers) {
+      this.displayedUserList = this.totalUserList.slice((this.page + 1) * 5, (this.page + 2) * 5);
+    } else {
+      this.displayedUserList = this.totalUserList.slice((this.page + 1) * 5, this.totalUsers);
+    }
+    this.message = `These users have been retrieved:\n${this.displayedUserList.join('\n')}`;
+    this.page++;
+  }
+
+  backPage() {
+    this.displayedUserList = this.totalUserList.slice((this.page - 1) * 5, this.page * 5);
+    this.message = `These users have been retrieved:\n${this.displayedUserList.join('\n')}`;
+    this.page--;
   }
 
   changeDataName(value: string) {
@@ -100,7 +120,10 @@ export class AppComponent {
         if (res.length == 0) {
           this.message = 'No users exist!';
         } else {
-          this.message = `These users have been retrieved:\n${res.join('\n')}`;
+          this.totalUsers = res.length;
+          this.totalUserList = res;
+          this.displayedUserList = res.slice(0, 5);
+          this.message = `These users have been retrieved:\n${this.displayedUserList.join('\n')}`;
         }
       },
       error: (err) => {
