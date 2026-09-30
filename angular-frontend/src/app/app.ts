@@ -3,16 +3,18 @@ import { RouterOutlet } from '@angular/router';
 import { AppComponent } from './app.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, AppComponent, CommonModule, FormsModule],
+  imports: [RouterOutlet, AppComponent, CommonModule, FormsModule, MatSliderModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('angular-frontend');
   textColor: string = 'white';
+  finalValue: number = 0;
   nameError: { error: boolean; helperText: string } = { error: false, helperText: '' };
   characterError: { error: boolean; helperText: string }[] = [
     { error: false, helperText: '' },
@@ -51,8 +53,84 @@ export class App {
     },
   ];
   // Change color dynamically
-  changeColor(newColor: string) {
-    this.textColor = newColor;
+  onSliderChange(newColor: Event) {
+    if (
+      Number((newColor.target as HTMLInputElement).value) >= 0 &&
+      Number((newColor.target as HTMLInputElement).value) <= 5
+    ) {
+      this.textColor = '#FFFFFF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) >= 5 &&
+      Number((newColor.target as HTMLInputElement).value) <= 10
+    ) {
+      this.textColor = '#FF0000';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 10 &&
+      Number((newColor.target as HTMLInputElement).value) <= 15
+    ) {
+      this.textColor = '#FF9D00';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 15 &&
+      Number((newColor.target as HTMLInputElement).value) <= 20
+    ) {
+      this.textColor = '#F2FF00';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 20 &&
+      Number((newColor.target as HTMLInputElement).value) <= 25
+    ) {
+      this.textColor = '#B7FF00';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 25 &&
+      Number((newColor.target as HTMLInputElement).value) <= 30
+    ) {
+      this.textColor = '#2FFF00';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 30 &&
+      Number((newColor.target as HTMLInputElement).value) <= 35
+    ) {
+      this.textColor = '#00FF90';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 35 &&
+      Number((newColor.target as HTMLInputElement).value) <= 40
+    ) {
+      this.textColor = '#00FFE1';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 40 &&
+      Number((newColor.target as HTMLInputElement).value) <= 45
+    ) {
+      this.textColor = '#00B3FF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 45 &&
+      Number((newColor.target as HTMLInputElement).value) <= 50
+    ) {
+      this.textColor = '#0048FF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 50 &&
+      Number((newColor.target as HTMLInputElement).value) <= 55
+    ) {
+      this.textColor = '#2600FF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 55 &&
+      Number((newColor.target as HTMLInputElement).value) <= 60
+    ) {
+      this.textColor = '#5D00FF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 60 &&
+      Number((newColor.target as HTMLInputElement).value) <= 65
+    ) {
+      this.textColor = '#A200FF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 65 &&
+      Number((newColor.target as HTMLInputElement).value) <= 70
+    ) {
+      this.textColor = '#EA00FF';
+    } else if (
+      Number((newColor.target as HTMLInputElement).value) > 70 &&
+      Number((newColor.target as HTMLInputElement).value) <= 75
+    ) {
+      this.textColor = '#FF00AA';
+    }
+    this.finalValue = Number((newColor.target as HTMLInputElement).value);
   }
   changeFranchise(newFranchise: { name: string; characters: string[] }) {
     this.franchise = newFranchise;
