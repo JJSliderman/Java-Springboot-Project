@@ -15,16 +15,19 @@ export class AppComponent {
     password: '',
     name: '',
     age: '',
+    role: '',
   };
 
   usernameError: { error: boolean; helperText: string } = { error: false, helperText: '' };
   passwordError: { error: boolean; helperText: string } = { error: false, helperText: '' };
+  roleError: { error: boolean; helperText: string } = { error: false, helperText: '' };
   ageError: { error: boolean; helperText: string } = { error: false, helperText: '' };
   existingUser: boolean = false;
   page: number = 0;
   totalUsers: number = 0;
   totalUserList: string[] = [];
   displayedUserList: string[] = [];
+  options: string[] = ['admin', 'user'];
   anchor: EventTarget | null = null;
   message = '';
 
@@ -55,6 +58,14 @@ export class AppComponent {
   }
   changeDataUsername(value: string) {
     this.data.username = value;
+  }
+  changeDataRole(value: string) {
+    if (value === '') {
+      this.roleError = { error: true, helperText: 'Must be non-null' };
+    } else {
+      this.roleError = { error: false, helperText: '' };
+    }
+    this.data.role = value;
   }
   changeDataPassword(value: string) {
     this.data.password = value;
@@ -87,10 +98,11 @@ export class AppComponent {
   close() {
     this.existingUser = false;
     this.anchor = null;
-    this.data = { username: '', password: '', age: '', name: '' };
+    this.data = { username: '', password: '', age: '', name: '', role: '' };
     this.usernameError = { error: false, helperText: '' };
     this.ageError = { error: false, helperText: '' };
     this.passwordError = { error: false, helperText: '' };
+    this.roleError = { error: false, helperText: '' };
   }
 
   fetchData(target: EventTarget | null) {
@@ -101,6 +113,10 @@ export class AppComponent {
           this.message = 'No users with this information exist!';
         } else {
           this.data = { ...res[0], age: res[0].age.toString() };
+          this.roleError = { error: false, helperText: '' };
+          this.ageError = { error: false, helperText: '' };
+          this.passwordError = { error: false, helperText: '' };
+          this.usernameError = { error: false, helperText: '' };
           this.message = `User of username ${res[0].username} has been retrieved!`;
           this.setAnchor(target);
           this.existingUser = true;
@@ -165,6 +181,8 @@ export class AppComponent {
       this.existingUser &&
       !this.usernameError.error &&
       !this.passwordError.error &&
+      !this.roleError.error &&
+      this.data.role !== '' &&
       !this.ageError.error
     ) {
       const newUser = { ...this.data, age: Number(this.data.age) };
@@ -186,13 +204,22 @@ export class AppComponent {
       if (this.data.username === '') {
         this.usernameError = { error: true, helperText: 'Must be non-null' };
       }
+      if (this.data.role === '') {
+        this.roleError = { error: true, helperText: 'Must be non-null' };
+      }
       if (this.data.password === '') {
         this.passwordError = { error: true, helperText: 'Must be non-null' };
       }
     }
   }
   createUser() {
-    if (!this.usernameError.error && !this.passwordError.error && !this.ageError.error) {
+    if (
+      !this.usernameError.error &&
+      !this.passwordError.error &&
+      !this.ageError.error &&
+      this.data.role !== '' &&
+      !this.roleError.error
+    ) {
       const newUser = { ...this.data, age: Number(this.data.age) };
       this.api.addUser(newUser).subscribe({
         next: (res) => {
@@ -211,6 +238,9 @@ export class AppComponent {
       }
       if (this.data.username === '') {
         this.usernameError = { error: true, helperText: 'Must be non-null' };
+      }
+      if (this.data.role === '') {
+        this.roleError = { error: true, helperText: 'Must be non-null' };
       }
       if (this.data.password === '') {
         this.passwordError = { error: true, helperText: 'Must be non-null' };

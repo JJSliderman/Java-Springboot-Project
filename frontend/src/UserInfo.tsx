@@ -7,6 +7,7 @@ type Props = {
   user: {
     username: string;
     name: string;
+    role: string;
     age: string;
     password: string;
   };
@@ -14,6 +15,7 @@ type Props = {
     username: string;
     name: string;
     age: string;
+    role: string;
     password: string;
   }) => void;
   setMessage: (value: string) => void;
@@ -28,6 +30,7 @@ export const UserInfo = ({
   setMessage,
   message,
 }: Props) => {
+  const options = ["admin", "user"];
   const [ageHelp, setAgeHelp] = useState<{
     helperText: string;
     error: boolean;
@@ -37,6 +40,10 @@ export const UserInfo = ({
     error: boolean;
   }>({ helperText: "", error: false });
   const [passwordHelp, setPasswordHelp] = useState<{
+    helperText: string;
+    error: boolean;
+  }>({ helperText: "", error: false });
+  const [roleHelp, setRoleHelp] = useState<{
     helperText: string;
     error: boolean;
   }>({ helperText: "", error: false });
@@ -226,6 +233,42 @@ export const UserInfo = ({
       </div>
       <div
         style={{
+          gap: "4px",
+          display: "flex",
+          alignItems: "start",
+          textAlign: "start",
+        }}
+      >
+        <text style={{ width: "100px" }}>Role</text>
+        <select
+          style={{
+            cursor: existingUser ? "not-allowed" : "auto",
+            backgroundColor: existingUser ? "#888" : "white",
+          }}
+          disabled={existingUser}
+          value={user.role}
+          onChange={(e) => {
+            if (e.target.value === "") {
+              setRoleHelp({ error: true, helperText: "Must be non-null" });
+            } else {
+              setRoleHelp({ error: false, helperText: "" });
+            }
+            setUser({ ...user, role: e.target.value });
+          }}
+        >
+          <option value="" selected={user.role === ""}></option>
+          {options.map((item, index) => (
+            <option value={item} key={`option-${index}`}>
+              {item}
+            </option>
+          ))}
+        </select>
+      </div>
+      {roleHelp.error ? (
+        <text style={{ color: "red" }}>{roleHelp.helperText}</text>
+      ) : null}
+      <div
+        style={{
           display: "flex",
           justifyContent: "end",
           gap: "8px",
@@ -238,13 +281,17 @@ export const UserInfo = ({
               !ageHelp.error &&
               !passwordHelp.error &&
               !usernameHelp.error &&
-              existingUser
+              !roleHelp.error &&
+              existingUser &&
+              user.role !== ""
             ) {
               editUser();
             } else if (
               !ageHelp.error &&
               !passwordHelp.error &&
-              !usernameHelp.error
+              !usernameHelp.error &&
+              !roleHelp.error &&
+              user.role !== ""
             ) {
               addUser();
             } else {
@@ -259,6 +306,12 @@ export const UserInfo = ({
               }
               if (user.password === "") {
                 setPasswordHelp({
+                  error: true,
+                  helperText: "Must be non-null",
+                });
+              }
+              if (user.role === "") {
+                setRoleHelp({
                   error: true,
                   helperText: "Must be non-null",
                 });

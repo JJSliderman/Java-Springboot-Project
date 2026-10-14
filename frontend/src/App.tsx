@@ -18,7 +18,8 @@ export const App = () => {
     name: string;
     age: string;
     password: string;
-  }>({ username: "", name: "", age: "", password: "" });
+    role: string;
+  }>({ username: "", name: "", age: "", password: "", role: "" });
 
   const fetchGreeting = async () => {
     try {
@@ -37,7 +38,7 @@ export const App = () => {
 
   const close = () => {
     setExistingUser(false);
-    setUser({ username: "", password: "", age: "", name: "" });
+    setUser({ username: "", password: "", age: "", name: "", role: "" });
     setAnchor(undefined);
   };
 
@@ -122,7 +123,13 @@ export const App = () => {
       <div style={{ paddingTop: "20px" }}>
         <button
           onClick={(e) => {
-            setUser({ username: "", password: "", age: "", name: "" });
+            setUser({
+              username: "",
+              password: "",
+              age: "",
+              name: "",
+              role: "",
+            });
             setMessage("");
             setAnchor(e.currentTarget);
           }}

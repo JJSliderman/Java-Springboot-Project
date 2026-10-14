@@ -121,6 +121,20 @@
         [(ngModel)]="data.name"
         (ngModelChange)="changeDataName($event)"
       />
+      <select
+        [ngClass]="roleError.error == false || existingUser ? 'single-input' : 'error-input'"
+        [disabled]="existingUser"
+        [(ngModel)]="data.role"
+        (ngModelChange)="changeDataRole($event)"
+      >
+        <option [selected]="data.role === ''" [value]=""></option>
+        <option *ngFor="let opt of options" [selected]="opt === data.role" [value]="opt">
+          {{ opt }}
+        </option>
+      </select>
+      <p class="error-text" *ngIf="roleError.error">
+        {{ roleError.helperText }}
+      </p>
       <div class="end-buttons">
         <button class="get-button" *ngIf="existingUser" (click)="deleteUser()">Delete User</button>
         <button class="get-button" *ngIf="existingUser" (click)="editUser()">Edit User</button>

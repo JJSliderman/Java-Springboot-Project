@@ -9,6 +9,7 @@ export interface User {
   name: string;
   password: string;
   age: number;
+  role: string;
 }
 
 export interface AlteredUser {
@@ -16,6 +17,7 @@ export interface AlteredUser {
   name: string;
   password: string;
   age: string;
+  role: string;
 }
 
 @Injectable({ providedIn: 'root' })

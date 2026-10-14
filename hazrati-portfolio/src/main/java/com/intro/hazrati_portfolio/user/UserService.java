@@ -29,6 +29,10 @@ public class UserService {
         return userRepository.findAll().stream().filter(user -> user.getName().toLowerCase().contains(searchText.toLowerCase())).collect(Collectors.toList());
     }
 
+    public List<User> getUsersFromRole(String searchText) {
+        return userRepository.findAll().stream().filter(user -> user.getRole().toLowerCase().contains(searchText.toLowerCase())).collect(Collectors.toList());
+    }
+
     public List<User> getUsersFromUsername(String searchText) {
         return userRepository.findAll().stream().filter(user -> user.getUsername().toLowerCase().contains(searchText.toLowerCase())).collect(Collectors.toList());
     }
@@ -67,6 +71,7 @@ public class UserService {
             userToUpdate.setName(updatedUser.getName());
             userToUpdate.setUsername(updatedUser.getUsername());
             userToUpdate.setPassword(updatedUser.getPassword());
+            userToUpdate.setRole(updatedUser.getRole());
 
             userRepository.save(userToUpdate);
             return userToUpdate;

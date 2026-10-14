@@ -26,6 +26,8 @@ public class User {
     private String password;
     @Column(name="age")
     private Integer age;
+    @Column(name="role")
+    private String role;
     /*@Column(name="authorities")
     private Collection<? extends GrantedAuthority> authorities;
     @Column(name="enabled", nullable=false)
@@ -40,11 +42,12 @@ public class User {
     public User() {
     }
 
-    public User(String username, String name, String password, Integer age) {
+    public User(String username, String name, String password, Integer age, String role) {
         this.username = username;
         this.name = name;
         this.password = password;
         this.age = age;
+        this.role = role;
     }
 
     /* public User(String username, String name, String password, Integer age, Collection<? extends GrantedAuthority> authorities) {
@@ -61,10 +64,11 @@ public class User {
         this.authorities = authorities;
     } */
 
-    public User(String username, String name, String password) {
+    public User(String username, String name, String password, String role) {
         this.username = username;
         this.name = name;
         this.password = password;
+        this.role = role;
     }
 
     /* public User(String username, String name, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -79,10 +83,23 @@ public class User {
         this.password = password;
     }
 
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     public User(String username, Integer age, String password) {
         this.username = username;
         this.age = age;
         this.password = password;
+    }
+    
+    public User(String username, Integer age, String password, String role) {
+        this.username = username;
+        this.age = age;
+        this.password = password;
+        this.role = role;
     }
 
     /* public User(String username, Integer age, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -117,6 +134,15 @@ public class User {
     // @Override
     public String getUsername() {
         return username;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    // @Override
+    public String getRole() {
+        return role;
     }
 
     /* @Override
