@@ -211,23 +211,67 @@
 
   .page-border {
     border: 8px solid;
-    border-image: linear-gradient(90deg, red, orange, yellow, green, blue, purple) 1;
-    animation: borderColorShift 8s linear infinite;
+    animation: borderColorShift 4s ease-in-out infinite reverse;
     padding: 20px;
     min-height: 100vh;
     box-sizing: border-box;
   }
 
+  .picture {
+    background-image: url(/assets/Mario-PNG-Pic.png);
+    animation: imageShift 12s ease-in-out infinite;
+    height: 100vh;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
   /* Animation to shift gradient colors */
   @keyframes borderColorShift {
     0% {
-      border-image: linear-gradient(90deg, red, orange, yellow, green, blue, purple) 1;
+      border-image: linear-gradient(180deg, #000000, #ff0000, #bbccdd, #cc33aa, #99aa33, #448899)
+        0.5;
     }
-    50% {
-      border-image: linear-gradient(90deg, purple, blue, green, yellow, orange, red) 1;
+    20% {
+      border-image: linear-gradient(45deg, #0099dd, #119933, #221199, #44aa33, #ddaa99, #bb2288) 0.5;
+    }
+    40% {
+      border-image: linear-gradient(90deg, #11aa33, #22bb55, #ee3399, #ff3322, #aaeeff, #aae) 0.5;
+    }
+    60% {
+      border-image: linear-gradient(135deg, #bbc, #990099, #22eeff, #55ddaa, #887788, #dfe) 0.5;
+    }
+    80% {
+      border-image: linear-gradient(225deg, #0129ab, #f38392, #f39, #edacde, #bbc01a, #a84932) 0.5;
     }
     100% {
-      border-image: linear-gradient(90deg, red, orange, yellow, green, blue, purple) 1;
+      border-image: linear-gradient(270deg, #eeddaa, #d8a384, #fa8753, #aa3311, #bb22aa, #cc88f2)
+        0.5;
+    }
+  }
+
+  @keyframes imageShift {
+    0% {
+      background-image: url(/assets/Mario-PNG-Pic.png);
+    }
+    17% {
+      background-image: url(/assets/Mario-Transparent.png);
+    }
+    34% {
+      background-image: url(/assets/1200px-SuperMarioParty_Peach_2.png);
+    }
+    51% {
+      background-image: url(/assets/Bowser2023.png);
+    }
+    67% {
+      background-image: url(/assets/MPS_Toad_Artwork.png);
+    }
+    84% {
+      background-image: url(/assets/Wario_MP10.png);
+    }
+    100% {
+      background-image: url(/assets/Mario-PNG-Pic.png);
     }
   }
 
@@ -414,6 +458,7 @@
         </div>
       </div>
     </div>
+    <div class="picture"></div>
     <div class="colorheader">Background Color Options</div>
     <div class="colors">
       <mat-slider min="0" max="75" step="1" value="finalValue" (input)="onSliderChange($event)"
